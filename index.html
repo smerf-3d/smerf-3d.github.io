@@ -1,1 +1,433 @@
-Hello SMERF!
+<!DOCTYPE html>
+<html>
+
+<head lang="en">
+    <meta charset="UTF-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+
+    <title>SMERF</title>
+
+    <meta name="description" content="SMERF: Streamable Real-Time Radiance Fields of Large Scenes">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <!-- <base href="/"> -->
+
+    <!--FACEBOOK-->
+    <meta property="og:image" content="/assets/img/merf/social.png">
+    <meta property="og:image:type" content="image/png">
+    <meta property="og:image:width" content="1280">
+    <meta property="og:image:height" content="720">
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://smerf-3d.github.io" />
+    <meta property="og:title" content="SMERF" />
+    <meta property="og:description"
+        content="Project page for SMERF: Streamable Real-Time Radiance Fields of Large Scenes." />
+
+    <!--TWITTER-->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content=SMERF" />
+    <meta name="twitter:description"
+        content="Project page for SMERF: Streamable Real-Time Radiance Fields of Large Scenes." />
+    <meta name="twitter:image" content="/assets/img/merf/social.png" />
+
+
+    <!--     <link rel="apple-touch-icon" href="apple-touch-icon.png"> -->
+    <link rel="icon"
+        href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🪴</text></svg>">
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.css">
+    <link rel="stylesheet" href="/assets/css/merf/app.css">
+
+    <link rel="stylesheet" href="/assets/css/merf/bootstrap.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.8.0/codemirror.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/1.5.3/clipboard.min.js"></script>
+
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script type="text/javascript" id="MathJax-script" async
+        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+        </script>
+
+    <link rel="stylesheet" href="/assets/css/merf/dics.min.css">
+    <script src="/assets/js/merf/dics.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', domReady);
+        function domReady() {
+            for (const e of document.querySelectorAll(".b-dics")) {
+                new Dics({
+                    container: e,
+                    textPosition: "top"
+                });
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <div class="container" id="main">
+        <div class="row">
+            <h2 class="col-md-12 text-center">
+                <b>SMERF</b>: Streamable Real-Time Radiance Fields of Large Scenes</br>
+                <!--small>
+                    Under Review
+                </small-->
+            </h2>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <ul class="list-inline">
+                    <li>
+                        <a href="https://www.stronglyconvex.com/about.html">
+                            Daniel Duckworth*<sup>1</sup>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://phogzone.com/">
+                            Peter Hedman*<sup>2</sup>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://creiser.github.io/">
+                            Christian Reiser<sup>2,4</sup>
+                        </a>
+                    </li>
+                    <li>
+                        <a href=https://www.linkedin.com/in/petr-zhizhin-9a5a6a75">
+                            Peter Zhizhin<sup>2</sup>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://linkedin.com/in/jean-francois-thibert-0682ba98">
+                            Jean-François Thibert<sup>3</sup>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://lucic.ai/">
+                            Mario Lučić<sup>1</sup>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://szeliski.org/RichardSzeliski.htm">
+                            Richard Szeliski<sup>2</sup>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://jonbarron.info/">
+                            Jonathan T. Barron<sup>2</sup>
+                        </a>
+                    </li>
+                </ul>
+                <ul class="list-inline">
+                    <li>
+                        equal contribution*
+                    </li>
+                    <li>
+                        Google DeepMind<sup>1</sup>
+                    </li>
+                    <li>
+                        Google Research<sup>2</sup>
+                    </li>
+                    <li>
+                        Google Inc.<sup>3</sup>
+                    </li>
+                    <li>
+                        Tübingen AI Center,  University of Tübingen<sup>4</sup>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2 text-center">
+                <ul class="nav nav-pills nav-justified">
+                    <li>
+                        <a href="https://arxiv.org/abs/2302.12249">
+                            <image src="/assets/img/merf/paper.png" height="120px">
+                                <h4><strong>Paper</strong></h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="https://youtu.be/3EACM2JAcxc">
+                            <image src="/assets/img/merf/youtube_icon.png" height="120px">
+                                <h4><strong>Video</strong></h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#demos">
+                            <image src="/assets/img/merf/demo.png" height="120px">
+                                <h4><strong>Demos</strong></h4>
+                        </a>
+                    </li>
+                    <!--li>
+                        <a href="https://github.com/google-research/google-research/tree/master/smerf">
+                            <image src="/assets/img/merf/github_pad.png" height="120px">
+                                <h4><strong>Code</strong></h4>
+                        </a>
+                    </li-->
+                </ul>
+            </div>
+        </div>
+
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Abstract
+                </h3>
+                <!-- <image src="/assets/img/merf/rays.jpg" class="img-responsive" alt="overview"><br> -->
+                <p class="text-justify">
+                    Recent techniques for real-time view synthesis have rapidly advanced in fidelity and speed, and
+                    modern methods are capable of rendering near-photorealistic scenes at interactive frame rates.
+                    At the same time, a tension has arisen between explicit scene representations amenable to
+                    rasterization and neural fields built on ray marching, with state-of-the-art instances of the latter
+                    surpassing the former in quality while being prohibitively expensive for real-time applications.
+                    Modern approaches to neural fields invariably compromise on quality, speed, or representation size
+                    to remain competitive.
+                    In this work, we introduce SMERF, a view synthesis approach that achieves state-of-the-art
+                    accuracy among real-time methods on large scenes with footprints up to 300 m² at a
+                    volumetric resolution of 3.5 mm³.
+                    Our method is built upon two primary contributions: a hierarchical model partitioning scheme that
+                    increases model capacity while constraining compute and memory consumption, and a distillation-based
+                    training strategy that simultaneously yields high fidelity and internal consistency.
+                    Our approach enables full six degrees of freedom (6DOF) navigation using a web browser and maintains
+                    an <b>average 30 frames per second at 720p on a commodity laptop</b> with a limited compute and
+                    memory
+                    budget.
+                    Extensive experiments demonstrate that our method exceeds the current state-of-the-art in real-time
+                    novel view synthesis <b>by 0.5 dB on standard benchmarks and 1.0 dB on large scenes</b>, renders
+                    frames
+                    more than three orders of magnitude faster than state-of-the-art radiance field models, and achieves
+                    real-time performance across a wide variety of commodity devices.
+                </p>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Video
+                </h3>
+                <div class="text-center">
+                    <div style="position:relative;padding-top:56.25%;">
+                        <iframe src="https://www.youtube.com/embed/3EACM2JAcxc" allowfullscreen
+                            style="position:absolute;top:0;left:0;width:100%;height:100%;"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2" id="demos">
+                <h3>
+                    Real-Time Interactive Viewer Demos
+                </h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4 col-md-offset-2 text-center">
+                <ul class="nav nav-pills nav-justified">
+                    <li>
+                        <a href="/select_quality?scene=2022-06-06_duckworthd_apartment" target="_blank">
+                            <image src="/assets/img/merf/scene_preview/duckworth.png" width="160px"></image>
+                            <h4><strong>Duckworth</strong></h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/select_quality?scene=mildenhall" target="_blank">
+                            <image src="/assets/img/merf/scene_preview/mildenhall.png" width="160px"></image>
+                            <h4><strong>Mildenhall</strong></h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/select_quality?scene=nottingham" target="_blank">
+                            <image src="/assets/img/merf/scene_preview/nottingham.png" width="160px"></image>
+                            <h4><strong>Nottingham</strong></h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/select_quality?scene=westcombe_20percent" target="_blank">
+                            <image src="/assets/img/merf/scene_preview/westcombe.png" width="160px"></image>
+                            <h4><strong>Westcombe</strong></h4>
+                        </a>
+                    </li>
+                    <br>
+                    <li>
+                        <a href="/select_quality?scene=gardenvase" target="_blank">
+                            <image src="/assets/img/merf/scene_preview/gardenvase.png" width="160px"></image>
+                            <h4><strong>Gardenvase</strong></h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/select_quality?scene=bicycle" target="_blank">
+                            <image src="/assets/img/merf/scene_preview/bicycle.png" width="160px"></image>
+                            <h4><strong>Bicycle</strong></h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/select_quality?scene=kitchenlego" target="_blank">
+                            <image src="/assets/img/merf/scene_preview/kitchenlego.png" width="160px"></image>
+                            <h4><strong>Kitchen Lego</strong></h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/select_quality?scene=stump" target="_blank">
+                            <image src="/assets/img/merf/scene_preview/stump.png" width="160px"></image>
+                            <h4><strong>Stump</strong></h4>
+                        </a>
+                    </li>
+                    <br>
+                    <li>
+                        <a href="/select_quality?scene=officebonsai" target="_blank">
+                            <image src="/assets/img/merf/scene_preview/officebonsai.png" width="160px"></image>
+                            <h4><strong>Office Bonsai</strong></h4>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a href="/select_quality?scene=fulllivingroom" target="_blank">
+                            <image src="/assets/img/merf/scene_preview/fulllivingroom.png" width="160px"></image>
+                            <h4><strong>Full Living Room</strong></h4>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/select_quality?scene=kitchencounter" target="_blank">
+                            <image src="/assets/img/merf/scene_preview/kitchencounter.png" width="160px"></image>
+                            <h4><strong>Kitchen Counter</strong></h4>
+                        </a>
+                    </li>
+                    <li>
+                        <style>
+                            .disabled-link {
+                                pointer-events: none;
+                                color: grey;
+                            }
+                        </style>
+                        <a href="" class="disabled-link">
+                            <image src="/assets/img/merf/scene_preview/flowertreehill.png" width="160px"></image>
+                            <h4><strong>Treehill & Flower </strong></h4>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+
+        <div class="row comp-margin">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    SMERF vs 3D Gaussian Splatting
+                </h3>
+                <div class="b-dics" style="width: 100%">
+                    <img src="/assets/img/merf/comp/stump_snerg.png" alt="SNeRG++ (210 MB)" />
+                    <img src="/assets/img/merf/comp/stump_merf.png" alt="MERF (220 MB)" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row comp-margin">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="b-dics" style="width: 100%">
+                    <img src="/assets/img/merf/comp/kitchenlego_snerg.png" alt="SNeRG++  (213 MB)" />
+                    <img src="/assets/img/merf/comp/kitchenlego_merf.png" alt="MERF (233 MB)" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <div class="b-dics" style="width: 100%">
+                    <img src="/assets/img/merf/comp/gardenvase_snerg.png" alt="SNeRG++  (117 MB)" />
+                    <img src="/assets/img/merf/comp/gardenvase_merf.png" alt="MERF (198 MB)" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Architecture
+                </h3>
+                <br>
+                <image src="/assets/img/merf/overview.png" style="width:100%;" class="img-responsive center-block"
+                    alt="overview">
+                    <br>
+                    <p class="text-justify">
+                        <b>Left</b>: We model large multi-room scenes with a number of independent submodels, each of which is
+                        assigned to a different region of the scene.  During rendering the submodel is picked
+                        based on camera origin. <b>Center</b>: To model complex view-dependent effects, within each submodel
+                        we additionally instantiate grid-aligned copies of deferred MLP parameters \(\theta\). These
+                        parameters are trilinearly interpolated based on camera origin \(\mathbf{o}\).
+                        <b>Right</b>: While each submodel represents the entire scene, only the submodel's assiociated grid cell
+                        is modelled with high resolution, which is realized by contracting the submodel-specific local coordinates.
+                    </p>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Distillation
+                </h3>
+                <image src="/assets/img/merf/distill.png" style="width:80%;" class="img-responsive center-block"
+                    alt="contraction"></image>
+                <p class="text-justify">
+                    We demonstrate that image fidelity can be greatly boosted via distillation. We first train a
+                    state-of-the-art offline radiance field (Zip-NeRF) and then use the RGB color predictions \(\mathbf{c}\) of this teacher
+                    model on
+                    sampled rays as supervision for our model. Additionally, we directly access the geometry of the
+                    pre-trained teacher by minimizing along the ray the discrepencay of volume rendering weights - computed from the density value \(\tau\) - between teacher and student.
+                </p>
+                </p>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Citation
+                </h3>
+                <p>
+                    If you want to cite our work, please use:
+                </p>
+                <pre>
+@misc{Duckworth2023ARXIV,
+    title={SMERF: Streamable Real-Time Radiance Fields of Large Scenes},
+    author={Daniel Duckworth AND Peter Hedman AND Christian Reiser AND Peter Zhizhin AND Jean-François Thibert AND Mario Lučić AND Richard Szeliski AND Jonathan T. Barron},
+    year={2023},
+    eprint={TODO},
+    archivePrefix={arXiv},
+    primaryClass={cs.CV}
+}</pre>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-8 col-md-offset-2">
+                <h3>
+                    Acknowledgements
+                </h3>
+                <p class="text-justify">
+                    The website template was borrowed from <a href="http://mgharbi.com/">Michaël
+                        Gharbi</a>.
+                    Image sliders are based on <a
+                        href="https://github.com/abelcabezaroman/definitive-image-comparison-slider">dics</a>.
+                </p>
+            </div>
+        </div>
+
+    </div>
+</body>
+
+</html>
