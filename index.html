@@ -1,7 +1,16 @@
 <!DOCTYPE html>
 <html>
 
-<head lang="en">
+  <head lang="en">
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W7L2E12Y6D"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-W7L2E12Y6D');
+    </script>
+
     <meta charset="UTF-8">
     <meta http-equiv="x-ua-compatible" content="ie=edge">
 
@@ -21,19 +30,19 @@
     <meta property="og:url" content="https://smerf-3d.github.io" />
     <meta property="og:title" content="SMERF" />
     <meta property="og:description"
-        content="Project page for SMERF: Streamable Real-Time Radiance Fields of Large Scenes." />
+          content="Project page for SMERF: Streamable Real-Time Radiance Fields of Large Scenes." />
 
     <!--TWITTER-->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content=SMERF" />
     <meta name="twitter:description"
-        content="Project page for SMERF: Streamable Real-Time Radiance Fields of Large Scenes." />
+          content="Project page for SMERF: Streamable Real-Time Radiance Fields of Large Scenes." />
     <meta name="twitter:image" content="/assets/img/merf/social.png" />
 
 
     <!--     <link rel="apple-touch-icon" href="apple-touch-icon.png"> -->
     <link rel="icon"
-        href="/favicon.ico">
+          href="/favicon.ico">
     <!-- Place favicon.ico in the root directory -->
 
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
@@ -50,23 +59,23 @@
 
     <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
     <script type="text/javascript" id="MathJax-script" async
-        src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
-        </script>
+                                   src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js">
+    </script>
 
     <link rel="stylesheet" href="/assets/css/merf/dics.min.css">
     <script src="/assets/js/merf/dics.min.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', domReady);
-        function domReady() {
-            for (const e of document.querySelectorAll(".b-dics")) {
-                new Dics({
-                    container: e,
-                    textPosition: "top"
-                });
-            }
+      document.addEventListener('DOMContentLoaded', domReady);
+      function domReady() {
+        for (const e of document.querySelectorAll(".b-dics")) {
+          new Dics({
+            container: e,
+            textPosition: "top"
+          });
         }
+      }
     </script>
-</head>
+  </head>
 
 <body>
     <div class="container" id="main">
@@ -148,19 +157,19 @@
                 <ul class="nav nav-pills nav-justified">
                     <li>
                         <a href="https://arxiv.org/abs/2302.12249">
-                            <image src="/assets/img/merf/paper.png" height="120px">
+                            <image src="/assets/img/merf/paper.png" class="mini">
                                 <h4><strong>Paper</strong></h4>
                         </a>
                     </li>
                     <li>
                         <a href="https://youtu.be/d8Rpvlo8qTo">
-                            <image src="/assets/img/merf/youtube_icon.png" height="120px">
+                            <image src="/assets/img/merf/youtube_preview.png" class="mini">
                                 <h4><strong>Video</strong></h4>
                         </a>
                     </li>
                     <li>
                         <a href="#demos">
-                            <image src="/assets/img/merf/demo.png" height="120px">
+                            <image src="/assets/img/merf/demo.png" class="mini">
                                 <h4><strong>Demos</strong></h4>
                         </a>
                     </li>
