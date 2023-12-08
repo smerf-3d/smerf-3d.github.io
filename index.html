@@ -174,6 +174,50 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <h3>The following videos were recorded from our <b>interactive 3D viewer</b> with a NVIDIA GTX 1080 Ti (2017)</h3>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="aspect-ratio-container">
+                    <video class="responsive-video" controls autoplay loop muted>
+                        <source src="assets/videos/duckworth.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="aspect-ratio-container">
+                    <video class="responsive-video" controls autoplay loop muted>
+                        <source src="assets/videos/mildenhall.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="aspect-ratio-container">
+                    <video class="responsive-video" controls autoplay loop muted>
+                        <source src="assets/videos/nottingham.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="aspect-ratio-container">
+                    <video class="responsive-video" controls autoplay loop muted>
+                        <source src="assets/videos/westcombe.mp4" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
+                </div>
+            </div>
+        </div>
 
 
         <div class="row">
@@ -322,7 +366,7 @@
         </div>
 
 
-        <div class="row comp-margin">
+        <!--div class="row comp-margin">
             <div class="col-md-8 col-md-offset-2">
                 <h3>
                     SMERF vs 3D Gaussian Splatting
@@ -350,24 +394,24 @@
                     <img src="/assets/img/merf/comp/gardenvase_merf.png" alt="MERF (198 MB)" />
                 </div>
             </div>
-        </div>
+        </div-->
 
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <h3>
-                    Architecture
+                    How we boost representation power to handle large scenes
                 </h3>
                 <br>
                 <image src="/assets/img/merf/overview.png" style="width:100%;" class="img-responsive center-block"
                     alt="overview">
                     <br>
                     <p class="text-justify">
-                        <b>Left</b>: We model large multi-room scenes with a number of independent submodels, each of which is
+                        <b>(a)</b>: We model large multi-room scenes with a number of independent submodels, each of which is
                         assigned to a different region of the scene.  During rendering the submodel is picked
-                        based on camera origin. <b>Center</b>: To model complex view-dependent effects, within each submodel
+                        based on camera origin. <b>(b)</b>: To model complex view-dependent effects, within each submodel
                         we additionally instantiate grid-aligned copies of deferred MLP parameters \(\theta\). These
                         parameters are trilinearly interpolated based on camera origin \(\mathbf{o}\).
-                        <b>Right</b>: While each submodel represents the entire scene, only the submodel's assiociated grid cell
+                        <b>(c)</b>: While each submodel represents the entire scene, only the submodel's assiociated grid cell
                         is modelled with high resolution, which is realized by contracting the submodel-specific local coordinates.
                     </p>
             </div>
@@ -377,16 +421,15 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <h3>
-                    Distillation
+                    Getting the maximum out of our representation via distillation
                 </h3>
                 <image src="/assets/img/merf/distill.png" style="width:80%;" class="img-responsive center-block"
                     alt="contraction"></image>
                 <p class="text-justify">
                     We demonstrate that image fidelity can be greatly boosted via distillation. We first train a
-                    state-of-the-art offline radiance field (Zip-NeRF) and then use the RGB color predictions \(\mathbf{c}\) of this teacher
-                    model on
-                    sampled rays as supervision for our model. Additionally, we directly access the geometry of the
-                    pre-trained teacher by minimizing along the ray the discrepencay of volume rendering weights - computed from the density value \(\tau\) - between teacher and student.
+                    state-of-the-art offline radiance field (Zip-NeRF). We then use the RGB color predictions \(\mathbf{c}\) of this teacher
+                    model as supervision for our own model. Additionally, we access the volumetric density values \(\tau\) of the
+                    pre-trained teacher by minimizing the discrepancy of volume rendering weights between teacher and student.
                 </p>
                 </p>
             </div>
