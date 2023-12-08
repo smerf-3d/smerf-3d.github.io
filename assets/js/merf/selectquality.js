@@ -19,10 +19,10 @@ function start() {
   const params = new URL(window.location.href).searchParams;
   const scene = params.get('scene');
   sceneToSubmodelIndex = {
-    '2022-06-06_duckworthd_apartment': 4,
-    'mildenhall': 4,
-    'nottingham': 4,
-    'westcombe_20percent': 4
+    'berlin': 4,
+    'nyc': 4,
+    'alameda': 4,
+    'london': 4
   }
   submodelIndex = 0;
   if (scene in sceneToSubmodelIndex) {
@@ -32,7 +32,7 @@ function start() {
   console.log('scene:', scene);
 
   if (scene in sceneToSubmodelIndex) {
-    dirUrl += '&vfovy=70&mouseMode=fps&exposure=0.016&near=0.02&mergeSlices=false'
+    dirUrl += '&vfovy=70&mouseMode=map&exposure=0.016&near=0.02&mergeSlices=false'
   }
 
   const qualityPresets = ['phone', 'low', 'medium', 'high'];
