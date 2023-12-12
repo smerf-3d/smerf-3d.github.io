@@ -17,10 +17,10 @@ function createOccupancyGridsSpec(sceneParams) {
   // Decide on which resolutions to load.
   let blockSizes = [8, 16, 32, 64, 128];
   if (sceneParams['useBits']) {
-    blockSizes = [4, 16, 64];
+    blockSizes = [8, 32, 128];
   }
   if (sceneParams['useDistanceGrid']) {
-    blockSizes = [4];
+    blockSizes = [8];
   }
 
   // Create one spec per occupancy grid.
@@ -38,10 +38,10 @@ function createOccupancyGridsSpec(sceneParams) {
 
 function createDistanceGridsSpec(sceneParams) {
   if (!sceneParams['useDistanceGrid']) {
-    return {assetType: 'distance_grids', specs: [], blockSizes: []};
+    return {assetType: 'distance_grids', gridSpecs: [], blockSizes: []};
   }
 
-  let blockSize = 4;
+  let blockSize = 8;
 
   // Create one spec for all occupancy grids.
   return {
@@ -165,13 +165,17 @@ function createOccupancyGridSpec(sceneParams, prefix, blockSize) {
   let sliceSpecs = [];
   if (sceneParams['legacyGrids'] || !isSliced) {
     // Grid is contained entirely within one file.
+    let filename = `${prefix}_${blockSize}.${fileExtension}`;
+    if (!sceneParams['legacyGrids']) {
+      filename = `${prefix}_${blockSize}_000.${fileExtension}`;
+    }
     sliceSpecs.push({
       assetType: `${prefix}_slice`,
       shape: [gridSize, gridSize, gridSize],
       numChannels: numChannels,
       sliceIndex: 0,
       numSlices: 1,
-      filename: `${prefix}_${blockSize}.${fileExtension}`,
+      filename: filename,
     });
   } else {
     // Grid is split across several different files.
