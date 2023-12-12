@@ -50,7 +50,10 @@ function start() {
   for (let preset of qualityPresets) {
     // Finalize url parameters for this preset for this scene.
     const mouseMode = scene in sceneToSubmodelIndex ? preset.mouseModeBig : preset.mouseModeSmall;
-    const newParamsForPreset = [...newParamsForScene, `quality=${preset.platform}`, `mouseMode=${mouseMode}`];
+    let newParamsForPreset = [...newParamsForScene, `quality=${preset.platform}`, `mouseMode=${mouseMode}`];
+    if (preset.platform == 'phone') {
+      newParamsForPreset.push('submodelCacheSize=0'); // Lower RAM usage.
+    }
     const newParamsForPresetStr = newParamsForPreset.join('&');
 
     // Update HTML.
