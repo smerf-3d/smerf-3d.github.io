@@ -17,6 +17,9 @@ function digits(i, min) {
 
 function start() {
   const params = new URL(window.location.href).searchParams;
+  let newParamsForScene = ['useDistanceGrid=true'];
+
+  // Determine url of first submodel's assets.
   const scene = params.get('scene');
   sceneToSubmodelIndex = {
     'berlin': 4,
@@ -28,18 +31,31 @@ function start() {
   if (scene in sceneToSubmodelIndex) {
     submodelIndex = sceneToSubmodelIndex[scene];
   }
-  dirUrl = 'https://storage.googleapis.com/realtime-nerf-360/smerf/' + params.get('scene') + '/sm_' + digits(submodelIndex, 3) + '&useDistanceGrid=true';
-  console.log('scene:', scene);
+  dirUrl = 'https://storage.googleapis.com/realtime-nerf-360/smerf/' + params.get('scene') + '/sm_' + digits(submodelIndex, 3);
 
+  // Compile new url parameters for this scene.
+  newParamsForScene.push(`dir=${dirUrl}`);
   if (scene in sceneToSubmodelIndex) {
-    dirUrl += '&vfovy=70&mouseMode=map&exposure=0.016&near=0.02&mergeSlices=false'
+    newParamsForScene.push('vfovy=70');
+    newParamsForScene.push('exposure=0.016');
+    newParamsForScene.push('near=0.02');
   }
 
-  const qualityPresets = ['phone', 'low', 'medium', 'high'];
-  for (const quality of qualityPresets) {
-    console.log(quality);
-    const e = document.getElementById(quality);
-    e.setAttribute('href', "/viewer?dir=" + dirUrl + '&quality=' + quality);
+  const qualityPresets = [
+    {platform: 'phone', mouseModeBig: 'map', mouseModeSmall: 'orbit'},
+    {platform: 'low', mouseModeBig: 'fps', mouseModeSmall: 'orbit'},
+    {platform: 'medium', mouseModeBig: 'fps', mouseModeSmall: 'orbit'},
+    {platform: 'high', mouseModeBig: 'fps', mouseModeSmall: 'orbit'},
+  ];
+  for (let preset of qualityPresets) {
+    // Finalize url parameters for this preset for this scene.
+    const mouseMode = scene in sceneToSubmodelIndex ? preset.mouseModeBig : preset.mouseModeSmall;
+    const newParamsForPreset = [...newParamsForScene, `quality=${preset.platform}`, `mouseMode=${mouseMode}`];
+    const newParamsForPresetStr = newParamsForPreset.join('&');
+
+    // Update HTML.
+    const e = document.getElementById(preset.platform);
+    e.setAttribute('href', `/viewer?${newParamsForPresetStr}`);
   }
 }
 
