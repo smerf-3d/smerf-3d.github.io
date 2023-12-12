@@ -53,61 +53,79 @@ body {
 }
 
 #loading-container {
-  width: 150px;
-  height: 150px;
+  width: 59px;
+  height: 25px;
   padding: 0px;
-  margin: -40px 0 0 -40px;
   position: absolute;
-  top: 50%;
-  left: 50%;
+  top: 0%;
+  right: 0%;
 }
 
 .loading-bgbox {
   position: absolute;
-  width: 65px;
-  height: 65px;
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
   background-color: #DDD;
-  width: 65px;
-  height: 65px;
 }
 
-#topleft {
+#left {
   top: 5px;
   left: 5px;
 }
 
-#bottomleft {
+#middle {
   bottom: 5px;
-  left: 5px;
+  left: 22px;
 }
 
-#topright {
+#right {
   top: 5px;
   right: 5px;
 }
 
-#bottomright {
-  bottom: 5px;
-  right: 5px;
-}
-
-#loading-indicator {
+.loading-indicator {
   position: absolute;
-  top: 5px;
-  left: 5px;
-  width: 65px;
-  height: 65px;
-  background-color: #999;
-  animation-name: indicator;
+  top: 4px;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background-color: #777;
   animation-duration: 5s;
   animation-iteration-count: infinite;
 }
 
-@keyframes indicator {
-  0%   {top: 5px; left: 5px; }
-  25%  {top: 5px; left: 80px; }
-  50%  {top: 80px; left: 80px; }
-  75%  {top: 80px; left: 5px; }
+#indicator-left {
+  left: 4px;
+  opacity: 1;
+  animation-name: indicator-left;
+}
+@keyframes indicator-left {
+  0.0%   { opacity: 1; }
+  33.3%  { opacity: 0; }
+  66.6%  { opacity: 0; }
+}
+
+#indicator-middle {
+  left: 21px;
+  opacity: 0;
+  animation-name: indicator-middle;
+}
+@keyframes indicator-middle {
+  0.0%   { opacity: 0; }
+  33.3%  { opacity: 1; }
+  66.6%  { opacity: 0; }
+}
+
+#indicator-right {
+  left: 38px;
+  opacity: 0;
+  animation-name: indicator-right;
+}
+@keyframes indicator-right {
+  0.0%   { opacity: 0; }
+  33.3%  { opacity: 0; }
+  66.6%  { opacity: 1; }
 }
 
 #viewspacecontainer {
@@ -157,11 +175,12 @@ body {
 Click me to start benchmarking when the frame-rate is behaving reasonably.
   </textarea>
   <div id="loading-container">
-    <div id="topleft" class="loading-bgbox"></div>
-    <div id="bottomleft" class="loading-bgbox"></div>
-    <div id="topright" class="loading-bgbox"></div>
-    <div id="bottomright" class="loading-bgbox"></div>
-    <div id="loading-indicator"></div>
+    <div id="left" class="loading-bgbox"></div>
+    <div id="middle" class="loading-bgbox"></div>
+    <div id="right" class="loading-bgbox"></div>
+    <div id="indicator-left" class="loading-indicator"></div>
+    <div id="indicator-middle" class="loading-indicator"></div>
+    <div id="indicator-right" class="loading-indicator"></div>
   </div>
   <div class=viewspace id="viewspace"></div>
 </div>
@@ -170,21 +189,22 @@ Click me to start benchmarking when the frame-rate is behaving reasonably.
 <textarea id="shader-editor" rows="50" cols="200"></textarea>
 
 <!-- third party -->
-<script src="https://unpkg.com/three@0.113.1/build/three.js"></script>
-<script src="https://unpkg.com/three@0.113.1/examples/js/controls/OrbitControls.js"></script>
-<script src="https://unpkg.com/three@0.113.1/examples/js/controls/PointerLockControls.js"></script>
+<!-- <script src="https://unpkg.com/three@0.113.1/build/three.js"></script> -->
+<!-- <script src="https://unpkg.com/three@0.113.1/examples/js/controls/OrbitControls.js"></script> -->
+<!-- <script src="https://unpkg.com/three@0.113.1/examples/js/controls/PointerLockControls.js"></script> -->
 <!-- <script src="https://unpkg.com/png-js@1.0.0/zlib.js"></script> -->
 <!-- <script src="https://unpkg.com/png-js@1.0.0/png.js"></script> -->
-<script src="https://unpkg.com/stats-js@1.0.1/build/stats.min.js"></script>
-<script src="https://unpkg.com/file-saver@2.0.0-rc.2/dist/FileSaver.min.js"></script>
+<!-- <script src="https://unpkg.com/stats-js@1.0.1/build/stats.min.js"></script> -->
+<!-- <script src="https://unpkg.com/file-saver@2.0.0-rc.2/dist/FileSaver.min.js"></script> -->
 
 <!-- Use if you've downloaded these scripts locally. -->
-<!-- <script src="third_party/three.js"></script> -->
-<!-- <script src="third_party/OrbitControls.js"></script> -->
-<!-- <script src="third_party/PointerLockControls.js"></script> -->
+<script src="third_party/three.js"></script>
+<script src="third_party/OrbitControls.js"></script>
+<script src="third_party/PointerLockControls.js"></script>
 <script src="third_party/zlib.js"></script>
 <script src="third_party/png.js"></script>
-<!-- <script src="third_party/stats.min.js"></script> -->
+<script src="third_party/stats.min.js"></script>
+<script src="third_party/FileSaver.min.js"></script>
 
 <!-- own code-->
 <script src="scene_spec.js"></script>
