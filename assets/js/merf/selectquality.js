@@ -17,7 +17,7 @@ function digits(i, min) {
 
 function start() {
   const params = new URL(window.location.href).searchParams;
-  let newParamsForScene = ['useDistanceGrid=true'];
+  let newParamsForScene = ['useDistanceGrid=true','useBits=true'];
 
   // Determine url of first submodel's assets.
   const scene = params.get('scene');
