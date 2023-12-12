@@ -231,28 +231,26 @@
                 </h3>
                 <!-- <image src="/assets/img/merf/rays.jpg" class="img-responsive" alt="overview"><br> -->
                 <p class="text-justify">
-                    Recent techniques for real-time view synthesis have rapidly advanced in fidelity and speed, and
-                    modern methods are capable of rendering near-photorealistic scenes at interactive frame rates.
-                    At the same time, a tension has arisen between explicit scene representations amenable to
-                    rasterization and neural fields built on ray marching, with state-of-the-art instances of the latter
-                    surpassing the former in quality while being prohibitively expensive for real-time applications.
-                    Modern approaches to neural fields invariably compromise on quality, speed, or representation size
-                    to remain competitive.
-                    In this work, we introduce SMERF, a view synthesis approach that achieves state-of-the-art
-                    accuracy among real-time methods on large scenes with footprints up to 300 m² at a
-                    volumetric resolution of 3.5 mm³.
-                    Our method is built upon two primary contributions: a hierarchical model partitioning scheme that
-                    increases model capacity while constraining compute and memory consumption, and a distillation-based
-                    training strategy that simultaneously yields high fidelity and internal consistency.
-                    Our approach enables full six degrees of freedom (6DOF) navigation using a web browser and maintains
-                    an <b>average 30 frames per second at 720p on a commodity laptop</b> with a limited compute and
-                    memory
-                    budget.
-                    Extensive experiments demonstrate that our method exceeds the current state-of-the-art in real-time
-                    novel view synthesis <b>by 0.5 dB on standard benchmarks and 1.0 dB on large scenes</b>, renders
-                    frames
-                    more than three orders of magnitude faster than state-of-the-art radiance field models, and achieves
-                    real-time performance across a wide variety of commodity devices.
+                Recent techniques for real-time view synthesis have rapidly advanced in
+                fidelity and speed, and modern methods are capable of rendering
+                near-photorealistic scenes at interactive frame rates. At the same time, a
+                tension has arisen between explicit scene representations amenable to
+                rasterization and neural fields built on ray marching, with state-of-the-art
+                instances of the latter surpassing the former in quality while being
+                prohibitively expensive for real-time applications. In this work, we introduce
+                SMERF, a view synthesis approach that achieves state-of-the-art accuracy among
+                real-time methods on large scenes with footprints <b>up to 300 m^2 at a volumetric
+                resolution of 3.5 mm^3</b>. Our method is built upon two primary contributions: a
+                hierarchical model partitioning scheme, which increases model capacity while
+                constraining compute and memory consumption, and a distillation training
+                strategy that simultaneously yields high fidelity and internal consistency. Our
+                approach enables full six degrees of freedom (6DOF) navigation within a web
+                browser and <b>renders in real-time on commodity smartphones and laptops</b>.
+                Extensive experiments show that our method exceeds the current state-of-the-art
+                in real-time novel view synthesis by <b>0.78 dB on standard benchmarks and 1.78 dB
+                on large scenes</b>, renders frames three orders of magnitude faster than
+                state-of-the-art radiance field models, and achieves real-time performance
+                across a wide variety of commodity devices, including smartphones.
                 </p>
             </div>
         </div>
@@ -449,14 +447,15 @@
                     If you want to cite our work, please use:
                 </p>
                 <pre>
-@misc{Duckworth2023ARXIV,
+@misc{duckworth2023arxiv,
     title={SMERF: Streamable Memory Efficient Radiance Fields for Real-Time Large-Scene Exploration},
     author={Daniel Duckworth AND Peter Hedman AND Christian Reiser AND Peter Zhizhin AND Jean-François Thibert AND Mario Lučić AND Richard Szeliski AND Jonathan T. Barron},
     year={2023},
     eprint={TODO},
     archivePrefix={arXiv},
     primaryClass={cs.CV}
-}</pre>
+}
+                </pre>
             </div>
         </div>
 
