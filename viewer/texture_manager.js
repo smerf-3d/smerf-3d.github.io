@@ -451,7 +451,6 @@ async function initializeRayMarchScene(si, sceneContent) {
     'world_T_cam': {'value': new THREE.Matrix4()},
     'cam_T_clip': {'value': new THREE.Matrix4()},
     'worldspaceROpengl': {'value': worldspaceROpengl},
-    'exposure': {'value': gExposure},
   };
 
   occupancyUniforms = {};
@@ -505,6 +504,8 @@ async function initializeRayMarchScene(si, sceneContent) {
       gExposure = parseFloat(sceneParams['default_exposure']);
     }
     fragmentShaderSource = '#define USE_EXPOSURE\n' + fragmentShaderSource;
+    exposureUniforms = {'exposure': {'value': gExposure}};
+    rayMarchUniforms = extend(rayMarchUniforms, exposureUniforms);
   }
 
   const activation =
@@ -535,6 +536,9 @@ async function initializeRayMarchScene(si, sceneContent) {
   if (sceneParams['useLargerStepsWhenOccluded']) {
     fragmentShaderSource =
         '#define LARGER_STEPS_WHEN_OCCLUDED\n' + fragmentShaderSource;
+    fragmentShaderSource = '#define kVisibilityDelay ' +
+        Number(sceneParams['step_size_visibility_delay']).toFixed(10) + '\n' +
+        fragmentShaderSource;
   }
 
   // Initialize triplane shader

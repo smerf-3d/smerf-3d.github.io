@@ -186,13 +186,17 @@ function initFromParameters() {
   // For manually overriding parameters in scene_params.json.
   let overrideParams = {};
 
-  const benchmark = params.get('benchmark');
+  const benchmarkParam = params.get('benchmark');
+  const benchmark = benchmarkParam &&
+      (benchmarkParam.toLowerCase() === 'time' ||
+       benchmarkParam.toLowerCase() === 'quality');
   if (benchmark) {
-    overrideParams['loadBenchmarkCameras'] = benchmark.toLowerCase() === 'true';
+    overrideParams['loadBenchmarkCameras'] = true;
     quality = 'high';
-
     const sceneNameChunks = dirUrl.split('/').slice(-2);
-    setupBenchmarkStats(sceneNameChunks[0] + '_' + sceneNameChunks[1]);
+    setupBenchmarkStats(
+        sceneNameChunks[0] + '_' + sceneNameChunks[1],
+        benchmarkParam.toLowerCase() === 'quality');
   }
 
   // snerg, vfr
@@ -216,11 +220,8 @@ function initFromParameters() {
   // Use distance grid for calculating step sizes.
   const useDistanceGrid = params.get('useDistanceGrid');
   if (useDistanceGrid) {
-    // A scene with a distance grid also has bit packed occupancy grids.
     overrideParams['useDistanceGrid'] =
         useDistanceGrid.toLowerCase() === 'true';
-    overrideParams['useBits'] =
-        overrideParams['useBits'] || overrideParams['useDistanceGrid'];
   }
 
   // Load legacy scenes, where the distance & occupancy grids are stored
@@ -290,8 +291,10 @@ function initFromParameters() {
       ' DeferredMLP: "elu" (default) or "relu" (for older models).\n' +
       'featureGating (Optional, internal) If true, use feature gating for the' +
       ' triplanes. Set to false for older MERF scenes.\n' +
-      'benchmark (Optional) If true, sets quality=high and benchmarks' +
-      '  rendertimes for the viewpoints in test_frames.json.\n' +
+      'benchmark (Optional) If "time" or "quality", sets quality=high and' +
+      ' renders the viewpoints in [scene_dir]/test_frames.json. If set to' +
+      ' "time", only frame times are reported. If set to "quality", then' +
+      ' the rendered images are also downloaded as "%04d.png".\n' +
       's: (Optional) The dimensions as width,height. E.g. 640,360.\n' +
       'vfovy:  (Optional) The vertical field of view of the viewer.\n';
 
@@ -325,14 +328,18 @@ function initFromParameters() {
   }
 
   // No downscale factor specified, estimate it from the quality setting.
+  let stepSizeVisibilityDelay = 0.99;
   if (!params.get('downscale') && quality) {
     let maxPixelsPerFrame = frameBufferWidth * frameBufferHeight;
     if (quality == 'phone') {  // For iPhones.
       maxPixelsPerFrame = 300 * 450;
+      stepSizeVisibilityDelay = 0.8;
     } else if (quality == 'low') {  // For laptops with integrated GPUs.
       maxPixelsPerFrame = 600 * 250;
+      stepSizeVisibilityDelay = 0.8;
     } else if (quality == 'medium') {  // For laptops with dicrete GPUs.
       maxPixelsPerFrame = 1200 * 640;
+      stepSizeVisibilityDelay = 0.95;
     }  // else assume quality is 'high' and render at full res.
 
     while (frameBufferWidth * frameBufferHeight / lowResFactor >
@@ -342,7 +349,8 @@ function initFromParameters() {
 
     console.log('Automatically chose a downscaling factor of ' + lowResFactor);
   }
-  overrideParams['useLargerStepsWhenOccluded'] = quality != 'high';
+  overrideParams['useLargerStepsWhenOccluded'] = true;
+  overrideParams['step_size_visibility_delay'] = stepSizeVisibilityDelay;
 
   // Near plane distance in world coordinates.
   const nearPlane = parseFloat(params.get('near') || 0.2);
@@ -389,6 +397,8 @@ function initFromParameters() {
     depth: false,
     antialias: false,
     desynchronized: false,
+    preserveDrawingBuffer:
+        benchmarkParam && benchmarkParam.toLowerCase() === 'quality',
   });
   gl.pixelStorei(gl.UNPACK_ALIGNMENT, 1);
   gRenderer = new THREE.WebGLRenderer({

@@ -12,6 +12,8 @@ let gIsCoolingDown = false;
  */
 let gBenchmarkTimestamps = null;
 
+let gFrameTimes = [];
+
 /**
  * A dictionary of camera poses for benchmarking
  * @type {!object}
@@ -34,14 +36,22 @@ const gBenchmarkMethodName = 'blockmerf';
  * We use this constant as a prefix when saving benchmark output files.
  * @type {?string}
  */
- let gBenchmarkSceneName = null;
+let gBenchmarkSceneName = null;
+
+/**
+ * Whether output images should be saved or not.
+ * @type {boolean}
+ */
+let gSaveBenchmarkFrames = false;
 
 /**
  * Shows the benchmark stats window and sets up the event listener for it.
  * @param {string} sceneName The name of the current scene.
+ * @param {boolan} saveImages Should the benchmark images be saved to disk?
  */
-function setupBenchmarkStats(sceneName) {
+function setupBenchmarkStats(sceneName, saveImages) {
   gBenchmarkSceneName = sceneName;
+  gSaveBenchmarkFrames = saveImages;
   let benchmarkStats = document.getElementById('benchmark-stats');
   benchmarkStats.style.display = 'block';
   benchmarkStats.addEventListener('click', e => {
@@ -68,7 +78,7 @@ function addBenchmarkRow(str) {
 /**
  * Returns the benchmark stats output string.
  */
- function getBenchmarkStats(str) {
+function getBenchmarkStats(str) {
   const benchmarkStats = document.getElementById('benchmark-stats');
   return benchmarkStats.innerHTML;
 }
@@ -138,7 +148,7 @@ function formatTimestampAsString() {
   const hours = date.getHours().toString().padStart(2, '0');
   const minutes = date.getMinutes().toString().padStart(2, '0');
   return `${date.getFullYear()}_${date.getMonth() + 1}_${date.getDate()}` +
-    `_${hours}${minutes}`;
+      `_${hours}${minutes}`;
 }
 
 /**
@@ -159,9 +169,9 @@ function formatTimestampAsString() {
 function benchmarkPerformance(defaultScheduleFrame) {
   // These constants were tuned to get repeatable results in the bicycle scene
   // on an iPhone 15 Pro and a 2019 16" MacBook Pro with an AMD Radeon 5500M.
-  const kCoolDownSeconds = 3;
-  const kMaxFramesPerCamera = 100;
-  const kNumFramesToDiscard = 10;
+  const kCoolDownSeconds = 0.0;
+  const kMaxFramesPerCamera = Math.max(4, Math.ceil(100 / gFrameMult));
+  const kNumFramesToDiscard = Math.max(2, Math.ceil(0.1 * kMaxFramesPerCamera));
 
   // We start benchmarking only after gLastFrame has first been set.
   if (isLoading()) {
@@ -171,25 +181,34 @@ function benchmarkPerformance(defaultScheduleFrame) {
   // We use the first frame after loading the scene to set up the
   // benchmarking state and cool the GPU down.
   if (!gBenchmarkTimestamps && !gIsCoolingDown) {
-    clearBenchmarkStats();
-    addBenchmarkRow(`Cooling the GPU down for ${
-        kCoolDownSeconds} seconds before benchmarking...`);
-
     setBenchmarkCameraPose(gCamera, 0);
-    gIsCoolingDown = true;
-    gBenchmarkTimestamps = []
-    requestAnimationFrame(cooldownFrame);
-    return () => {
-      setTimeout(() => {
-        let s = new THREE.Vector2();
-        gRenderer.getSize(s);
-        clearBenchmarkStats();
-        addBenchmarkRow(`frame timestamps (ms) at ${s.x}x${s.y}`);
-        addBenchmarkRow('cam_idx ; start ; end ; mean frame time');
-        gIsCoolingDown = false;
-        defaultScheduleFrame();
-      }, 1000 * kCoolDownSeconds);
-    };
+    gBenchmarkTimestamps = [];
+
+    if (kCoolDownSeconds > 0.0) {
+      clearBenchmarkStats();
+      addBenchmarkRow(`Cooling the GPU down for ${
+          kCoolDownSeconds} seconds before benchmarking...`);
+      gIsCoolingDown = true;
+      requestAnimationFrame(cooldownFrame);
+      return () => {
+        setTimeout(() => {
+          let s = new THREE.Vector2();
+          gRenderer.getSize(s);
+          clearBenchmarkStats();
+          addBenchmarkRow(`frame timestamps (ms) at ${s.x}x${s.y}`);
+          addBenchmarkRow('cam_idx ; start ; end ; mean frame time');
+          gIsCoolingDown = false;
+          defaultScheduleFrame();
+        }, 1000 * kCoolDownSeconds);
+      };
+    }
+
+    let s = new THREE.Vector2();
+    gRenderer.getSize(s);
+    clearBenchmarkStats();
+    addBenchmarkRow(`frame timestamps (ms) at ${s.x}x${s.y}`);
+    addBenchmarkRow('cam_idx ; start ; end ; mean frame time');
+    return defaultScheduleFrame;
   }
 
   gBenchmarkTimestamps.push(window.performance.now());
@@ -199,13 +218,19 @@ function benchmarkPerformance(defaultScheduleFrame) {
     return defaultScheduleFrame;
   }
 
+  if (gSaveBenchmarkFrames) {
+    frameAsPng = gRenderer.domElement.toDataURL('image/png');
+    saveAs(frameAsPng, digits(gBenchmarkCameraIndex, 4) + '.png');
+  }
+
   // Now that we have enough frames we can compute frame-time statistics.
   let benchmarkTimestamps = gBenchmarkTimestamps.slice(kNumFramesToDiscard);
   const numBenchmarkFrames = benchmarkTimestamps.length;
   const firstFrameTimestamp = benchmarkTimestamps[0];
   const lastFrameTimestamp = benchmarkTimestamps.pop();
   let meanTime = (lastFrameTimestamp - firstFrameTimestamp) /
-      (gFrameMult * numBenchmarkFrames);
+      (gFrameMult * (numBenchmarkFrames - 1));
+  gFrameTimes.push(meanTime);
 
   // Report them in the benchmark console.
   addBenchmarkRow(`${gBenchmarkCameraIndex} ; ${firstFrameTimestamp} ; ${
@@ -213,11 +238,12 @@ function benchmarkPerformance(defaultScheduleFrame) {
 
   // No more cameras: stop benchmarking, and store the results as a CSV file.
   if (++gBenchmarkCameraIndex >= gBenchmarkCameras.length) {
+    console.log(gFrameTimes.reduce((a, b) => a + b, 0) / gFrameTimes.length);
     gBenchmark = false;
     const csvBlob =
-      new Blob([getBenchmarkStats()], {type: "text/plain;charset=utf-8"});
-    const csvName = gBenchmarkMethodName + "_" +  gBenchmarkSceneName + "_" +
-      "frameMult_" + gFrameMult + "_" + formatTimestampAsString() + ".csv";
+        new Blob([getBenchmarkStats()], {type: 'text/plain;charset=utf-8'});
+    const csvName = gBenchmarkMethodName + '_' + gBenchmarkSceneName + '_' +
+        'frameMult_' + gFrameMult + '_' + formatTimestampAsString() + '.csv';
     saveAs(csvBlob, csvName);
     return defaultScheduleFrame;
   }
@@ -226,12 +252,15 @@ function benchmarkPerformance(defaultScheduleFrame) {
   // for the cooldown time to avoid biased results from thermal throttling.
   gBenchmarkTimestamps = [];
   setBenchmarkCameraPose(gCamera, gBenchmarkCameraIndex);
-  gIsCoolingDown = true;
-  requestAnimationFrame(cooldownFrame);
-  return () => {
-    setTimeout(() => {
-      gIsCoolingDown = false;
-      defaultScheduleFrame();
-    }, 1000 * kCoolDownSeconds);
-  };
+  if (kCoolDownSeconds > 0.0) {
+    gIsCoolingDown = true;
+    requestAnimationFrame(cooldownFrame);
+    return () => {
+      setTimeout(() => {
+        gIsCoolingDown = false;
+        defaultScheduleFrame();
+      }, 1000 * kCoolDownSeconds);
+    };
+  }
+  return defaultScheduleFrame;
 }

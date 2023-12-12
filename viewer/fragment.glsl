@@ -451,6 +451,9 @@ void main() {
 #endif
 
   float visibility = 1.0;
+#ifdef LARGER_STEPS_WHEN_OCCLUDED
+  float emaVisibility = 1.0;
+#endif
   vec3 accumulatedColor = vec3(0.0);
   vec4 accumulatedFeatures = vec4(0.0);
   int step = 0;
@@ -468,9 +471,13 @@ void main() {
 
   while (step < maxStep && visibility > 1.0 / 255.0) {
     step++;
+
 #ifdef LARGER_STEPS_WHEN_OCCLUDED
-    float stepSizeContracted = origStepSizeContracted *
-        mix(8.0, 1.0, min(1.0, visibility / 0.66));
+    emaVisibility =
+      kVisibilityDelay * emaVisibility + (1.0 - kVisibilityDelay) * visibility;
+    float stepAlpha = sqrt(min(1.0, emaVisibility / 0.8));
+    float stepSizeContracted =
+      origStepSizeContracted * mix(10.0, 1.0, stepAlpha);
 #else
     float stepSizeContracted = origStepSizeContracted;
 #endif
@@ -488,7 +495,7 @@ void main() {
       // immediately skip past the next quadrant (i.e. near the line
       // that is at the intersection of three or more quadrants).
       if (listQuadrantTMax[quadrantIndex - 1] >=
-        listQuadrantTMax[quadrantIndex] - stepSizeContracted) {
+        listQuadrantTMax[quadrantIndex] - stepSizeContracted * 16.0) {
         quadrantIndex++;
       }
 

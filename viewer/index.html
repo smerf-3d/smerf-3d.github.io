@@ -1,9 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-W7L2E12Y6D"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-W7L2E12Y6D');
+    </script>
+
     <meta charset=utf-8>
     <meta name="viewport" content="width=device-width,initial-scale=1,user-scalable=no">
-    <title>BlockMERF Viewer</title>
+    <title>SMERF Viewer</title>
 <style>
 body {
   font-family: Helvetica, "Helvetica Neue", sans-serif;
@@ -124,7 +133,8 @@ body {
 }
 
 #shader-editor {
-  display: block;
+  /* display: block; */
+  display: none;
   margin-top: 10px;
   margin-left: auto;
   margin-right: auto;
