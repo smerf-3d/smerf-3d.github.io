@@ -22,10 +22,10 @@ function start() {
   // Determine url of first submodel's assets.
   const scene = params.get('scene');
   sceneToSubmodelIndex = {
-    'berlin': 4,
+    'berlin': 22,
     'nyc': 4,
     'alameda': 4,
-    'london': 4
+    'london': 19
   }
   submodelIndex = 0;
   if (scene in sceneToSubmodelIndex) {
