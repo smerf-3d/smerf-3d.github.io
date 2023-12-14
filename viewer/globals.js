@@ -77,6 +77,7 @@ varying vec3 vOrigin;
 varying vec3 vDirection;
 uniform mat4 world_T_cam;
 uniform mat4 cam_T_clip;
+varying vec2 vUv;
 
 void main() {
   vec4 posClip = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
@@ -91,6 +92,7 @@ void main() {
   vec4 nearPointWorld = world_T_cam * nearPointCam;
   vOrigin = originWorld.xyz / originWorld.w;
   vDirection = nearPointWorld.xyz / nearPointWorld.w - vOrigin;
+  vUv = posClip.xy + 0.5;
 }
 `;
 
@@ -104,6 +106,7 @@ precision highp float;
 
 varying vec3 vOrigin;
 varying vec3 vDirection;
+varying vec2 vUv;
 
 uniform int displayMode;
 

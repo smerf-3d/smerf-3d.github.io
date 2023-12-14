@@ -376,6 +376,16 @@ OccupancyQueryResults queryOccupancyGrid(
   return r;
 }
 
+// From three.js's Dithering Implementation
+// https://github.com/mrdoob/three.js/blob/dev/src/renderers/shaders/ShaderChunk/common.glsl.js#L22-L31
+// expects values in the range of [0,1]x[0,1], returns values in the [0,1] range.
+// do not collapse into a single function per: http://byteblacksmith.com/improvements-to-the-canonical-one-liner-glsl-rand-for-opengl-es-2-0/
+float rand( const in vec2 uv ) {
+  const float a = 12.9898, b = 78.233, c = 43758.5453;
+  float dt = dot( uv.xy, vec2( a,b ) ), sn = mod( dt, 3.141592 );
+  return fract( sin( sn ) * c );
+}
+
 #define QUERY_DISTANCE_GRID(distanceGrid, voxelSizeDistance, gridSizeDistance)\
 {\
   vec3 blockMin = floor((z - kMinPosition) / voxelSizeDistance);\
@@ -468,6 +478,9 @@ void main() {
 
   int maxStep = kStepMult * int(ceil(length(GRID_SIZE)));
   float origStepSizeContracted = VOXEL_SIZE / float(kStepMult);
+
+  // Jitter Ray Position to avoid aliasing artifacts
+  float rayJitter = (rand(vUv.xy)-0.5) * origStepSizeContracted;
 
   while (step < maxStep && visibility > 1.0 / 255.0) {
     step++;
@@ -616,7 +629,7 @@ void main() {
       // step size in world space (required for density-to-alpha conversion)
       // make sure not to shoot ouf the current quadrant
       float tContractedNext = min(
-        tContracted + stepSizeContracted, r.quadrantTMinMaxContracted.y);
+        tContracted + stepSizeContracted, r.quadrantTMinMaxContracted.y) + rayJitter;
       // Position of the next sample in contracted space
       vec3 zNext = r.oContracted + tContractedNext * r.dContracted;
       float stepSizeWorld = (1.0 / kSubmodelScale) * distance(
