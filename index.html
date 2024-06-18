@@ -442,42 +442,64 @@
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-8 col-md-offset-2" id="data">
-                <h3>
-                    Datasets & Teacher Checkpoints
-                </h3>
-                <p class="text-justify">
-                  SMERF models are distilled from Zip-NeRF checkpoints trained on the Mip-NeRF 360 and Zip-NeRF scenes.
-                  The checkpoints below are used to recreate the quantitative results in the published text.
-                  Both datasets and checkpoints are released under CC-BY 4.0 license.
-                  See text for additional details.
-                </p>
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th class="col-md-2"></th>
-                      <th class="col-md-2 text-center">Photos</th>
-                      <th class="col-md-2 text-center">Teacher Checkpoints</th>
-                      <th class="col-md-6 text-center">Notes</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td class="text-center">Mip-NeRF 360</td>
-                      <td class="text-center"><a href="https://jonbarron.info/mipnerf360/">Project website</a></td>
-                      <td class="text-center"><a href="https://storage.googleapis.com/gresearch/refraw360/360_checkpoints.zip">Download</a></td>
-                      <td>Zip-NeRF checkpoints are trained for 50,000 steps. Checkpoints for treehill and flower available upon request.</td>
-                    </tr>
-                    <tr>
-                      <td class="text-center">Zip-NeRF (undistorted)</td>
-                      <td class="text-center"><a href="https://jonbarron.info/zipnerf/">Project website</a></td>
-                      <td class="text-center"><a href="https://storage.googleapis.com/gresearch/refraw360/zipnerf-undistorted/checkpoints.zip">Download</a></td>
-                      <td>Zip-NeRF checkpoints are trained for 100,000 steps on undistorted photos.</td>
-                    </tr>
-                  </tbody>
-                </table>
-            </div>
+        <div class="col-md-8 col-md-offset-2" id="data">
+          <h3>
+            Datasets &amp; Teacher Checkpoints
+          </h3>
+          <p class="text-justify">
+          SMERF models are distilled from Zip-NeRF checkpoints trained on the Mip-NeRF 360 and Zip-NeRF scenes.
+          The checkpoints below are used to recreate the quantitative results in the published text.
+          Both datasets and checkpoints are released under CC-BY 4.0 license.
+          See text for additional details.
+          </p>
+          <table class="table">
+            <thead>
+              <tr>
+                <th class="col-md-2"></th>
+                <th class="col-md-2 text-center">Photos</th>
+                <th class="col-md-2 text-center">Teacher Checkpoints</th>
+                <th class="col-md-6 text-center">Notes</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="text-center">Mip-NeRF 360</td>
+                <td class="text-center"><a href="https://jonbarron.info/mipnerf360/">Project website</a></td>
+                <td class="text-center"><a href="https://storage.googleapis.com/gresearch/refraw360/360_checkpoints.zip">Download All</a></td>
+                <td>
+                  For quantitative and qualitative results.
+                  Zip-NeRF checkpoints are trained for 50,000 steps.
+                  Checkpoints for treehill and flower available upon request.
+                </td>
+              </tr>
+              <tr>
+                <td class="text-center">Zip-NeRF (fisheye)</td>
+                <td class="text-center">
+                  <a href="https://storage.googleapis.com/gresearch/refraw360/zipnerf/alameda.zip">Alameda</a>, 
+                  <a href="https://storage.googleapis.com/gresearch/refraw360/zipnerf/berlin.zip">Berlin</a>, 
+                  <a href="https://storage.googleapis.com/gresearch/refraw360/zipnerf/london.zip">London</a>, 
+                  <a href="https://storage.googleapis.com/gresearch/refraw360/zipnerf/nyc.zip">NYC</a>
+                </td>
+                <td class="text-center">
+                  N/A
+                </td>
+                <td>For qualitative results. Zip-NeRF checkpoints are not open sourced.</td>
+              </tr>
+              <tr>
+                <td class="text-center">Zip-NeRF (undistorted)</td>
+                <td class="text-center">
+                  <a href="https://storage.googleapis.com/gresearch/refraw360/zipnerf-undistorted/alameda.zip">Alameda</a>, 
+                  <a href="https://storage.googleapis.com/gresearch/refraw360/zipnerf-undistorted/berlin.zip">Berlin</a>, 
+                  <a href="https://storage.googleapis.com/gresearch/refraw360/zipnerf-undistorted/london.zip">London</a>, 
+                  <a href="https://storage.googleapis.com/gresearch/refraw360/zipnerf-undistorted/nyc.zip">NYC</a>
+                </td>
+                <td class="text-center">
+                  <a href="https://storage.googleapis.com/gresearch/refraw360/zipnerf-undistorted/checkpoints.zip">Download All</a>
+                </td>
+                <td>For quantitative results. Zip-NeRF checkpoints are trained for 100,000 steps.</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
 
 
